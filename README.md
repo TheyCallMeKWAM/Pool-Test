@@ -8,6 +8,16 @@ The bank contains **100 questions**, all drawn from the Ontario pool guides
 Questions cover **definitions, numeric standards, and accreditation rules** —
 no meta-questions about the exam itself.
 
+## Anti-memorization features
+
+Every quiz run, two layers of randomization happen so candidates can't pattern-match:
+
+1. **A/B/C/D positions shuffle** — the correct answer's letter changes between runs.
+2. **Distractor pools** — for ~70 numeric questions, only 3 of 5–6 wrong answers
+   are shown each run, so the visible option set itself varies.
+
+Together: the same question rarely looks identical twice.
+
 ## Files
 
 | File           | Purpose                                                |
@@ -21,50 +31,66 @@ no meta-questions about the exam itself.
 
 Just open `index.html` in any web browser. No server, no build step.
 
-If you want to test on your phone on the same Wi-Fi, run a tiny local server:
-
 ```bash
-# from the project folder
+# from the project folder, to test on your phone on the same Wi-Fi
 python3 -m http.server 8000
 # then visit http://YOUR-COMPUTER-IP:8000
 ```
 
 ## Deploying to GitHub Pages
 
-1. Create a new GitHub repository (e.g., `aquatic-quiz`).
-2. Push these four files to the **`main`** branch.
-3. In your repo, go to **Settings → Pages**.
-4. Under "Source", choose **Deploy from a branch**.
-5. Select branch **`main`** and folder **`/ (root)`**, then **Save**.
-6. Wait ~1 minute. Your site will be live at:
-   `https://YOUR-USERNAME.github.io/aquatic-quiz/`
+1. Push these files to the `main` branch of your repo.
+2. **Settings → Pages → Source: Deploy from a branch → main → / (root) → Save**.
+3. Wait ~1 minute. Site will be live at `https://YOUR-USERNAME.github.io/REPO/`.
 
 ## Adding new questions
 
-Open `questions.js` and copy an existing question block:
+Two formats are supported. Use whichever fits the question.
+
+### Format 1 — Static options (best for definitions)
 
 ```js
 {
-  question: "Your question text?",
-  options:  ["Option A", "Option B", "Option C", "Option D"],
-  answer:   2,                           // 0=A, 1=B, 2=C, 3=D
-  category: "Water Chemistry",
-  explanation: "Optional short note shown after answering",
-  slideRef: "Part 3, Slide 24",          // optional: source from LSS slides
-  regRef:   "O. Reg. 565, s. 7"          // optional: source from regulation/guide
+  question: "Define risk:",
+  options: ["A text", "B text", "C text", "D text"],
+  answer: 1,                              // 0=A, 1=B, 2=C, 3=D
+  category: "Definitions",
+  explanation: "Optional short note",     // optional
+  slideRef: "Part 1, Slide 28",           // optional
+  regRef: "O. Reg. 565, s. 2"             // optional
 }
 ```
 
-The `answer` field is the **index** of the correct option (zero-based).
+### Format 2 — Distractor pool (best for numeric questions)
 
-### About references
+```js
+{
+  question: "What is the pH range for a public pool?",
+  correct: "7.2 – 7.8",                   // the right answer
+  distractors: [                          // pool of 5 wrong answers
+    "6.8 – 7.4",
+    "7.0 – 7.6",
+    "7.4 – 8.0",
+    "7.0 – 7.8",
+    "6.8 – 7.6"
+  ],
+  category: "Water Chemistry",
+  regRef: "O. Reg. 565, s. 7"
+}
+```
 
-- **`slideRef`** — Cite content from the LSS slides. Renders as a dark grey tag.
-- **`regRef`** — Cite content from Ontario Regulation 565 or the Sept 2025 LSS
-  Guide. Renders as an amber/orange tag (mirroring the orange highlight
-  convention used in the comprehensive study guide).
+Each quiz run picks 3 of the 5 distractors at random, combines them with the
+correct answer, and shuffles all four options. So the visible option set
+changes between runs and the correct answer's position varies.
 
-Either field is optional. Questions can have one, both, or neither.
+You can mix both formats in the same file — the quiz logic detects which
+format each question uses.
+
+### Source references
+
+- **`slideRef`** — LSS slide source. Renders as a dark grey tag.
+- **`regRef`** — Regulation 565 / LSS Guide source. Renders as an amber/orange
+  tag (mirroring the orange highlight convention in the comprehensive study guide).
 
 ## Question categories in the bank
 
@@ -90,5 +116,3 @@ Either field is optional. Questions can have one, both, or neither.
 ## Quiz length options
 
 On the setup screen, candidates can choose 10, 25, 50, or 100 questions per session.
-Questions are randomly selected from the full bank each time, with no repeats
-within a single quiz.

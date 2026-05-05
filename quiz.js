@@ -5,19 +5,26 @@
 //   1. Setup screen: pick number of questions
 //   2. Quiz screen: show one question at a time, give feedback
 //   3. Results screen: show score + missed questions
+//
+// Two layers of randomization happen on every quiz run:
+//   - Question selection: a random subset is picked from the bank
+//   - Per-question:
+//       (a) If the question has a distractor pool, pick 3 random
+//           wrong answers from it and combine with the correct one.
+//       (b) Shuffle the four options so A/B/C/D positions vary.
 // =============================================================
 
 // ----- State (the "memory" of the app) -----
 const state = {
-  selectedLength: 25,    // how many questions the user wants
-  questions: [],         // the random subset selected for this run
-  currentIndex: 0,       // which question we're on
-  score: 0,              // running correct count
-  missed: [],            // store missed questions to review at end
-  answered: false        // has user picked an option for this question yet?
+  selectedLength: 25,
+  questions: [],         // PREPARED questions (with options + correctIndex baked in)
+  currentIndex: 0,
+  score: 0,
+  missed: [],
+  answered: false
 };
 
-// ----- DOM element references (grab them once for speed) -----
+// ----- DOM element references -----
 const screens = {
   setup:   document.getElementById('setup-screen'),
   quiz:    document.getElementById('quiz-screen'),
@@ -70,22 +77,6 @@ els.lengthOptions.addEventListener('click', (e) => {
 els.startBtn.addEventListener('click', startQuiz);
 
 // =============================================================
-// START QUIZ
-// =============================================================
-function startQuiz() {
-  state.score = 0;
-  state.currentIndex = 0;
-  state.missed = [];
-  state.answered = false;
-
-  const count = Math.min(state.selectedLength, QUESTIONS.length);
-  state.questions = shuffleArray([...QUESTIONS]).slice(0, count);
-
-  showScreen('quiz');
-  renderQuestion();
-}
-
-// =============================================================
 // HELPER: Fisher-Yates shuffle (truly random array order)
 // =============================================================
 function shuffleArray(arr) {
@@ -97,9 +88,61 @@ function shuffleArray(arr) {
 }
 
 // =============================================================
+// HELPER: Prepare a question for display
+// Handles two question formats:
+//   (1) NEW: question has `correct` + `distractors` -> pick 3 random
+//       distractors, combine with correct, shuffle all 4.
+//   (2) OLD: question has `options` + `answer` index -> shuffle the
+//       4 options while remembering where the correct one moves to.
+// Returns: { ...originalQuestion, options: [...], correctIndex: N }
+// =============================================================
+function prepareQuestion(q) {
+  let optionTexts;
+  let correctText;
+
+  if (q.correct && Array.isArray(q.distractors)) {
+    // New format: pick 3 random distractors, combine with the correct answer
+    const pickedDistractors = shuffleArray([...q.distractors]).slice(0, 3);
+    optionTexts = shuffleArray([q.correct, ...pickedDistractors]);
+    correctText = q.correct;
+  } else {
+    // Legacy format: shuffle the existing options
+    correctText = q.options[q.answer];
+    optionTexts = shuffleArray([...q.options]);
+  }
+
+  // Find where the correct answer landed after shuffling
+  const correctIndex = optionTexts.indexOf(correctText);
+
+  return {
+    ...q,
+    options: optionTexts,
+    correctIndex: correctIndex
+  };
+}
+
+// =============================================================
+// START QUIZ
+// =============================================================
+function startQuiz() {
+  state.score = 0;
+  state.currentIndex = 0;
+  state.missed = [];
+  state.answered = false;
+
+  const count = Math.min(state.selectedLength, QUESTIONS.length);
+
+  // Pick random questions, then prepare each one (shuffles options + picks distractors)
+  state.questions = shuffleArray([...QUESTIONS])
+    .slice(0, count)
+    .map(prepareQuestion);
+
+  showScreen('quiz');
+  renderQuestion();
+}
+
+// =============================================================
 // HELPER: Build the references HTML for a question
-// Returns the HTML string for slide and/or regulation tags.
-// Returns empty string if neither reference is present.
 // =============================================================
 function buildReferencesHtml(q) {
   const tags = [];
@@ -149,7 +192,7 @@ function renderQuestion() {
   els.categoryTag.textContent = q.category;
   els.questionText.textContent = q.question;
 
-  // Build option buttons
+  // Build option buttons (q.options was already shuffled by prepareQuestion)
   els.optionsContainer.innerHTML = '';
   const letters = ['A', 'B', 'C', 'D'];
   q.options.forEach((optionText, index) => {
@@ -174,10 +217,9 @@ function handleAnswer(selectedIndex) {
   state.answered = true;
 
   const q = state.questions[state.currentIndex];
-  const correctIndex = q.answer;
+  const correctIndex = q.correctIndex;     // <-- now uses the prepared correctIndex
   const buttons = els.optionsContainer.querySelectorAll('.option-btn');
 
-  // Mark every button visually
   buttons.forEach((btn, i) => {
     btn.disabled = true;
     if (i === correctIndex) {
@@ -189,7 +231,6 @@ function handleAnswer(selectedIndex) {
     }
   });
 
-  // Update score / track missed
   if (selectedIndex === correctIndex) {
     state.score++;
     els.feedbackText.textContent = '✓ Correct';
@@ -205,7 +246,6 @@ function handleAnswer(selectedIndex) {
     });
   }
 
-  // Show explanation if available
   if (q.explanation) {
     els.explanationText.textContent = q.explanation;
     els.explanationText.classList.remove('hidden');
@@ -213,13 +253,11 @@ function handleAnswer(selectedIndex) {
     els.explanationText.classList.add('hidden');
   }
 
-  // Show source references (slide / regulation tags)
   els.referencesBox.innerHTML = buildReferencesHtml(q);
 
   els.feedback.classList.remove('hidden');
   els.scoreDisplay.textContent = `Score: ${state.score}`;
 
-  // Show next button (or "See Results" if last question)
   els.nextBtn.textContent = (state.currentIndex === state.questions.length - 1)
     ? 'See Results'
     : 'Next Question';
@@ -257,7 +295,6 @@ function showResults() {
     els.passFailMessage.className = 'pass-fail fail';
   }
 
-  // Render missed questions WITH references
   if (state.missed.length > 0) {
     els.missedSection.classList.remove('hidden');
     els.missedList.innerHTML = state.missed.map(m => `

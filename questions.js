@@ -1,26 +1,35 @@
 // =============================================================
 // AQUATIC SAFETY INSPECTOR - QUESTION BANK (100 questions)
 // =============================================================
-// All questions cover Ontario pool guide content only:
-//   - Definitions (pool classes, pool types, inspection terms)
-//   - Numbers (chemistry ranges, distances, ratios, fees, ages)
-//   - Accreditation rules
+// Two question formats supported (mix and match freely):
 //
-// To add a new question, copy an existing block and edit it.
-// Format:
+// FORMAT 1 — Static options (best for definitions / conceptual questions):
 //   {
-//     question: "The question text",
+//     question: "Define risk:",
 //     options:  ["A", "B", "C", "D"],
-//     answer:   0,                          // index (0-3) of correct answer
-//     category: "Water Chemistry",
-//     explanation: "Optional short note",
-//     slideRef: "Part 3, Slide 24",         // optional: LSS slide reference
-//     regRef:   "O. Reg. 565, s. 7"         // optional: regulation reference
+//     answer:   1,                          // index 0-3 of correct option
+//     category: "Definitions",
+//     ...
 //   }
+//
+// FORMAT 2 — Distractor pool (best for numeric questions):
+//   {
+//     question: "What is the pH range?",
+//     correct:  "7.2 – 7.8",                // the right answer
+//     distractors: ["6.8 – 7.4", "7.0 – 7.6", "7.4 – 8.0",
+//                   "7.0 – 7.8", "6.8 – 7.6"],   // 5 wrong answers
+//     category: "Water Chemistry",
+//     ...
+//   }
+//   On each quiz run, 3 of the 5 distractors are picked, combined
+//   with `correct`, and the four options are shuffled.
+//
+// Both formats also support: explanation, slideRef, regRef.
+// On every quiz, A/B/C/D positions are shuffled regardless of format.
 // =============================================================
 
 const QUESTIONS = [
-  // ---------- POOL CLASSIFICATIONS / DEFINITIONS ----------
+  // ---------- POOL CLASSIFICATIONS / DEFINITIONS (static options) ----------
   {
     question: "Which best describes a Class A pool?",
     options: [
@@ -70,7 +79,7 @@ const QUESTIONS = [
     regRef: "O. Reg. 565, s. 4.1"
   },
 
-  // ---------- POOL TYPE DEFINITIONS ----------
+  // ---------- POOL TYPE DEFINITIONS (static options) ----------
   {
     question: "How is a 'wading pool' defined in Regulation 565?",
     options: [
@@ -121,7 +130,7 @@ const QUESTIONS = [
     regRef: "O. Reg. 565 / Sept 2025 LSS Guide"
   },
 
-  // ---------- INSPECTION & RISK DEFINITIONS ----------
+  // ---------- INSPECTION & RISK DEFINITIONS (static options) ----------
   {
     question: "What is the stated purpose of the LSS Aquatic Safety Inspection?",
     options: [
@@ -207,92 +216,92 @@ const QUESTIONS = [
     slideRef: "Part 1, Slides 48–49"
   },
 
-  // ---------- WATER CHEMISTRY (NUMBERS) ----------
+  // ---------- WATER CHEMISTRY (distractor pool format) ----------
   {
     question: "What is the required pH range for a public pool?",
-    options: ["6.8 – 7.4", "7.0 – 7.6", "7.2 – 7.8", "7.4 – 8.0"],
-    answer: 2,
+    correct: "7.2 – 7.8",
+    distractors: ["6.8 – 7.4", "7.0 – 7.6", "7.4 – 8.0", "7.0 – 7.8", "6.8 – 7.6"],
     category: "Water Chemistry",
     explanation: "Pool pH must be maintained between 7.2 and 7.8.",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the Free Available Chlorine (FAC) range for an unstabilized pool?",
-    options: ["0.5 – 10 ppm", "1.0 – 10 ppm", "2.0 – 8 ppm", "5.0 – 10 ppm"],
-    answer: 0,
+    correct: "0.5 – 10 ppm",
+    distractors: ["1.0 – 10 ppm", "2.0 – 8 ppm", "5.0 – 10 ppm", "0.2 – 5 ppm", "1.5 – 8 ppm"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the Free Available Chlorine range for a stabilized pool?",
-    options: ["0.5 – 10 ppm", "1.0 – 10 ppm", "2.0 – 8 ppm", "5.0 – 10 ppm"],
-    answer: 1,
+    correct: "1.0 – 10 ppm",
+    distractors: ["0.5 – 10 ppm", "2.0 – 8 ppm", "5.0 – 10 ppm", "1.5 – 5 ppm", "1.0 – 5 ppm"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the FAC range for a hot water pool (≥ 35 °C)?",
-    options: ["0.5 – 5.0 ppm", "1.0 – 5.0 ppm", "2.0 – 8.0 ppm", "5.0 – 10.0 ppm"],
-    answer: 3,
+    correct: "5.0 – 10.0 ppm",
+    distractors: ["0.5 – 10 ppm", "1.0 – 10 ppm", "2.0 – 8.0 ppm", "1.5 – 5 ppm", "3.0 – 10 ppm"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the chlorine range for a spa?",
-    options: ["0.5 – 5.0 mg/L", "1.0 – 5.0 mg/L", "2.0 – 8.0 mg/L", "5.0 – 10.0 mg/L"],
-    answer: 3,
+    correct: "5.0 – 10.0 mg/L",
+    distractors: ["0.5 – 5.0 mg/L", "1.0 – 5.0 mg/L", "2.0 – 8.0 mg/L", "3.0 – 10.0 mg/L", "1.5 – 5.0 mg/L"],
     category: "Water Chemistry",
     slideRef: "Part 4, Slide 64",
     regRef: "O. Reg. 565"
   },
   {
     question: "What is the chlorine range for a wading pool?",
-    options: ["0.5 – 5.0 mg/L", "1.0 – 5.0 mg/L", "2.0 – 8.0 mg/L", "5.0 – 10.0 mg/L"],
-    answer: 3,
+    correct: "5.0 – 10.0 mg/L",
+    distractors: ["0.5 – 5.0 mg/L", "1.0 – 5.0 mg/L", "2.0 – 8.0 mg/L", "3.0 – 10.0 mg/L", "1.0 – 10 mg/L"],
     category: "Water Chemistry",
     slideRef: "Part 4, Slide 39",
     regRef: "O. Reg. 565"
   },
   {
     question: "What is the total alkalinity range for a public pool?",
-    options: ["40 – 100 ppm", "60 – 180 ppm", "80 – 200 ppm", "100 – 250 ppm"],
-    answer: 1,
+    correct: "60 – 180 ppm",
+    distractors: ["40 – 100 ppm", "80 – 200 ppm", "100 – 250 ppm", "80 – 120 ppm", "60 – 200 ppm"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the combined chlorine threshold that triggers shocking the pool?",
-    options: ["0.1 ppm", "0.2 ppm", "0.5 ppm", "1.0 ppm"],
-    answer: 1,
+    correct: "0.2 ppm",
+    distractors: ["0.1 ppm", "0.5 ppm", "1.0 ppm", "0.3 ppm", "0.05 ppm"],
     category: "Water Chemistry",
     explanation: "When TC − FAC = CC reaches 0.2 ppm or higher, the pool must be shocked.",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the maximum allowable cyanuric acid level in an outdoor pool?",
-    options: ["30 ppm", "50 ppm", "60 ppm", "100 ppm"],
-    answer: 2,
+    correct: "60 ppm",
+    distractors: ["30 ppm", "50 ppm", "100 ppm", "40 ppm", "80 ppm"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the required ORP range when an automatic sensing device is used?",
-    options: ["400 – 600 mV", "500 – 800 mV", "600 – 900 mV", "700 – 1000 mV"],
-    answer: 2,
+    correct: "600 – 900 mV",
+    distractors: ["400 – 600 mV", "500 – 800 mV", "700 – 1000 mV", "550 – 850 mV", "600 – 800 mV"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the total bromine range for a public pool?",
-    options: ["1.0 – 5.0 ppm", "2.0 – 8.0 ppm", "3.0 – 10.0 ppm", "5.0 – 10.0 ppm"],
-    answer: 1,
+    correct: "2.0 – 8.0 ppm",
+    distractors: ["1.0 – 5.0 ppm", "3.0 – 10.0 ppm", "5.0 – 10.0 ppm", "2.5 – 5.0 ppm", "1.5 – 8.0 ppm"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "Without an automatic sensing (ORP) device, how often must water be tested during operation?",
-    options: ["Every 1 hour", "Every 2 hours", "Every 4 hours", "Every 6 hours"],
-    answer: 1,
+    correct: "Every 2 hours",
+    distractors: ["Every 1 hour", "Every 4 hours", "Every 6 hours", "Every 30 minutes", "Every 3 hours"],
     category: "Water Chemistry",
     explanation: "Without ORP: 30 min before opening, then every 2 hours. With ORP: every 4 hours.",
     slideRef: "Part 3, Slide 24",
@@ -300,8 +309,8 @@ const QUESTIONS = [
   },
   {
     question: "With an automatic sensing (ORP) device, how often must water be tested during operation?",
-    options: ["Every 1 hour", "Every 2 hours", "Every 4 hours", "Every 6 hours"],
-    answer: 2,
+    correct: "Every 4 hours",
+    distractors: ["Every 1 hour", "Every 2 hours", "Every 6 hours", "Every 8 hours", "Every 3 hours"],
     category: "Water Chemistry",
     regRef: "O. Reg. 565, s. 7"
   },
@@ -315,142 +324,143 @@ const QUESTIONS = [
   },
   {
     question: "How often must a spa be super-chlorinated?",
-    options: ["Daily", "Once per week", "Once per month", "Only after fouling"],
-    answer: 1,
+    correct: "Once per week",
+    distractors: ["Daily", "Once per month", "Only after fouling", "Twice per week", "Every 3 days"],
     category: "Water Chemistry",
     slideRef: "Part 4, Slide 64"
   },
 
-  // ---------- TEMPERATURES (NUMBERS) ----------
+  // ---------- TEMPERATURES (distractor pool format) ----------
   {
     question: "What is the maximum allowable spa water temperature?",
-    options: ["35 °C", "38 °C", "40 °C", "42 °C"],
-    answer: 2,
+    correct: "40 °C",
+    distractors: ["35 °C", "38 °C", "42 °C", "37 °C", "43 °C"],
     category: "Temperatures",
     slideRef: "Part 4, Slide 64",
     regRef: "O. Reg. 565"
   },
   {
     question: "What is the maximum allowable shower water temperature?",
-    options: ["38 °C (100 °F)", "40 °C (104 °F)", "43 °C (110 °F)", "46 °C (115 °F)"],
-    answer: 1,
+    correct: "40 °C (104 °F)",
+    distractors: ["38 °C (100 °F)", "43 °C (110 °F)", "46 °C (115 °F)", "37 °C (98 °F)", "42 °C (108 °F)"],
     category: "Temperatures",
     slideRef: "Part 2, Slide 30"
   },
   {
     question: "A therapy pool (not classified as a spa) must operate within what range?",
-    options: ["28 – 30 °C", "30 – 32 °C", "32 – 34 °C", "35 – 37 °C"],
-    answer: 2,
+    correct: "32 – 34 °C",
+    distractors: ["28 – 30 °C", "30 – 32 °C", "35 – 37 °C", "30 – 34 °C", "33 – 35 °C"],
     category: "Temperatures",
     regRef: "O. Reg. 565 / Sept 2025 LSS Guide"
   },
 
-  // ---------- DISTANCES & DEPTHS (NUMBERS) ----------
+  // ---------- DISTANCES & DEPTHS (distractor pool format) ----------
   {
     question: "What is the maximum depth that defines a wading pool?",
-    options: ["0.5 m", "0.75 m", "1.0 m", "1.35 m"],
-    answer: 1,
+    correct: "0.75 m",
+    distractors: ["0.5 m", "1.0 m", "1.35 m", "0.6 m", "1.2 m"],
     category: "Distances & Depths",
     slideRef: "Part 4, Slide 37",
     regRef: "O. Reg. 565"
   },
   {
     question: "What is the bottom-visibility standard for a pool tank (the black disc test)?",
-    options: ["Visible at 6 m", "Visible at 9 m", "Visible at 12 m", "Visible at 15 m"],
-    answer: 1,
+    correct: "Visible at 9 m",
+    distractors: ["Visible at 6 m", "Visible at 12 m", "Visible at 15 m", "Visible at 7.5 m", "Visible at 10 m"],
     category: "Distances & Depths",
+    explanation: "The 150 mm black disc on a white background must be visible from 9 m.",
     slideRef: "Part 3, Slide 3",
     regRef: "O. Reg. 565, ss. 7, 19(6)"
   },
   {
     question: "A 'Shallow Water — No Diving' sign is required where the maximum water depth is:",
-    options: ["≤ 1.35 m", "≤ 2.0 m", "≤ 2.5 m", "≤ 3.0 m"],
-    answer: 2,
+    correct: "≤ 2.5 m",
+    distractors: ["≤ 1.35 m", "≤ 2.0 m", "≤ 3.0 m", "≤ 1.5 m", "≤ 2.3 m"],
     category: "Distances & Depths",
     slideRef: "Part 2, Slide 46",
     regRef: "O. Reg. 565, s. 19(7)"
   },
   {
     question: "At what depth does a wave pool require a 'no diving / no jumping' sign?",
-    options: ["1.35 m or less", "2.3 m or less", "2.5 m or less", "3.0 m or less"],
-    answer: 1,
+    correct: "2.3 m or less",
+    distractors: ["1.35 m or less", "2.5 m or less", "3.0 m or less", "1.5 m or less", "2.0 m or less"],
     category: "Distances & Depths",
     slideRef: "Part 4, Slide 6"
   },
   {
     question: "How far below water level must a water slide channel terminate?",
-    options: ["50 mm", "100 mm", "150 mm", "200 mm"],
-    answer: 2,
+    correct: "150 mm",
+    distractors: ["50 mm", "100 mm", "200 mm", "75 mm", "250 mm"],
     category: "Distances & Depths",
     regRef: "O. Reg. 565"
   },
   {
     question: "The shallow / deep boundary depth used in bather load calculations is:",
-    options: ["1.0 m", "1.2 m", "1.35 m", "1.5 m"],
-    answer: 2,
+    correct: "1.35 m",
+    distractors: ["1.0 m", "1.2 m", "1.5 m", "1.25 m", "1.4 m"],
     category: "Distances & Depths",
     explanation: "Shallow ≤ 1.35 m (4.5 ft); Deep > 1.35 m.",
     regRef: "O. Reg. 565, ss. 10, 17"
   },
   {
     question: "GFCI is required if the pool has underwater lights or electrical outlets within what distance of the pool surface?",
-    options: ["1 m", "2 m", "3 m", "5 m"],
-    answer: 2,
+    correct: "3 m",
+    distractors: ["1 m", "2 m", "5 m", "1.5 m", "4 m"],
     category: "Distances & Depths",
     regRef: "O. Reg. 565, ss. 6, 16.1"
   },
 
-  // ---------- POOL CLASSES & TURNOVER (NUMBERS) ----------
+  // ---------- POOL CLASSES & TURNOVER (distractor pool format) ----------
   {
     question: "How many classes of public pools does Regulation 565 establish?",
-    options: ["2", "3", "4", "5"],
-    answer: 1,
+    correct: "3",
+    distractors: ["2", "4", "5", "6", "7"],
     category: "Pool Classifications",
     regRef: "O. Reg. 565, s. 2"
   },
   {
     question: "How often must a Class A pool's water turn over (cycle through filters)?",
-    options: ["2 times per day", "3 times per day", "4 times per day", "6 times per day"],
-    answer: 2,
+    correct: "4 times per day",
+    distractors: ["2 times per day", "3 times per day", "6 times per day", "8 times per day", "5 times per day"],
     category: "Pool Classifications",
     explanation: "Class A: 4×/day (every 6 hours). Class B: 3×/day (every 8 hours).",
     regRef: "O. Reg. 565"
   },
   {
     question: "How often must a Class B pool's water turn over?",
-    options: ["2 times per day", "3 times per day", "4 times per day", "6 times per day"],
-    answer: 1,
+    correct: "3 times per day",
+    distractors: ["2 times per day", "4 times per day", "6 times per day", "1 time per day", "5 times per day"],
     category: "Pool Classifications",
     regRef: "O. Reg. 565"
   },
   {
     question: "How much make-up (fresh) water must be added per bather per day?",
-    options: ["5 L", "10 L", "15 L", "20 L"],
-    answer: 2,
+    correct: "15 L",
+    distractors: ["5 L", "10 L", "20 L", "12 L", "25 L"],
     category: "Pool Classifications",
     regRef: "O. Reg. 565, s. 7"
   },
   {
     question: "What is the maximum percentage of pool volume that can be added as make-up water per day?",
-    options: ["10%", "15%", "20%", "25%"],
-    answer: 2,
+    correct: "20%",
+    distractors: ["10%", "15%", "25%", "30%", "5%"],
     category: "Pool Classifications",
     regRef: "O. Reg. 565, s. 7"
   },
 
-  // ---------- SAFETY EQUIPMENT (NUMBERS) ----------
+  // ---------- SAFETY EQUIPMENT (distractor pool format) ----------
   {
     question: "What is the required length of a reaching pole?",
-    options: ["2.5 m", "3.0 m", "3.65 m", "4.5 m"],
-    answer: 2,
+    correct: "3.65 m",
+    distractors: ["2.5 m", "3.0 m", "4.5 m", "3.5 m", "4.0 m"],
     category: "Safety Equipment",
     slideRef: "Part 2, Slide 45",
     regRef: "O. Reg. 565, ss. 6, 16.1"
   },
   {
     question: "How many buoyant throwing aids are required at a public pool?",
-    options: ["1", "2", "3", "4"],
-    answer: 1,
+    correct: "2",
+    distractors: ["1", "3", "4", "5", "6"],
     category: "Safety Equipment",
     slideRef: "Part 2, Slide 45",
     regRef: "O. Reg. 565, ss. 6, 16.1"
@@ -464,8 +474,8 @@ const QUESTIONS = [
   },
   {
     question: "What is the diameter of the rope attached to a buoyant throwing aid?",
-    options: ["3 mm", "6 mm", "9 mm", "12 mm"],
-    answer: 1,
+    correct: "6 mm",
+    distractors: ["3 mm", "9 mm", "12 mm", "5 mm", "8 mm"],
     category: "Safety Equipment",
     regRef: "O. Reg. 565, ss. 6, 16.1"
   },
@@ -478,8 +488,8 @@ const QUESTIONS = [
   },
   {
     question: "How often must spa GFI be tested?",
-    options: ["Daily", "Weekly", "Monthly", "Annually"],
-    answer: 0,
+    correct: "Daily",
+    distractors: ["Weekly", "Monthly", "Annually", "Every shift", "Twice per week"],
     category: "Safety Equipment",
     slideRef: "Part 4, Slide 63"
   },
@@ -497,52 +507,52 @@ const QUESTIONS = [
   },
   {
     question: "What gauze pad size is required in the first aid kit?",
-    options: ["5 cm square", "7.5 cm square", "10 cm square", "15 cm square"],
-    answer: 1,
+    correct: "7.5 cm square",
+    distractors: ["5 cm square", "10 cm square", "15 cm square", "6 cm square", "12 cm square"],
     category: "Safety Equipment",
     regRef: "O. Reg. 565, s. 6"
   },
 
-  // ---------- LIFEGUARDS & SUPERVISION (NUMBERS) ----------
+  // ---------- LIFEGUARDS & SUPERVISION (distractor pool format) ----------
   {
     question: "What is the minimum age for a lifeguard?",
-    options: ["14 years", "15 years", "16 years", "18 years"],
-    answer: 1,
+    correct: "15 years",
+    distractors: ["14 years", "16 years", "18 years", "13 years", "17 years"],
     category: "Lifeguards & Supervision",
     regRef: "O. Reg. 565, s. 17"
   },
   {
     question: "How recent must a lifeguard's certificate be?",
-    options: ["Within 1 year of issue", "Within 2 years of issue", "Within 3 years of issue", "Within 5 years of issue"],
-    answer: 1,
+    correct: "Within 2 years of issue",
+    distractors: ["Within 1 year of issue", "Within 3 years of issue", "Within 5 years of issue", "Within 18 months of issue", "Within 4 years of issue"],
     category: "Lifeguards & Supervision",
     regRef: "O. Reg. 565, s. 17"
   },
   {
     question: "At a Class A pool, how recent must the within-call first aid certificate be?",
-    options: ["Within 1 year", "Within 2 years", "Within 3 years", "Within 5 years"],
-    answer: 2,
+    correct: "Within 3 years",
+    distractors: ["Within 1 year", "Within 2 years", "Within 5 years", "Within 4 years", "Within 18 months"],
     category: "Lifeguards & Supervision",
     regRef: "O. Reg. 565, s. 17"
   },
   {
     question: "For 0–30 bathers (lifeguards only), what is the minimum number of lifeguards required?",
-    options: ["1", "2", "3", "4"],
-    answer: 0,
+    correct: "1",
+    distractors: ["2", "3", "4", "0", "5"],
     category: "Lifeguards & Supervision",
     regRef: "O. Reg. 565, s. 17"
   },
   {
     question: "For 31–125 bathers (lifeguards only, no assistants), what is the minimum number of lifeguards?",
-    options: ["1", "2", "3", "4"],
-    answer: 1,
+    correct: "2",
+    distractors: ["1", "3", "4", "5", "6"],
     category: "Lifeguards & Supervision",
     regRef: "O. Reg. 565, s. 17"
   },
   {
     question: "For 126–250 bathers (lifeguards only), what is the minimum number of lifeguards?",
-    options: ["2", "3", "4", "5"],
-    answer: 1,
+    correct: "3",
+    distractors: ["2", "4", "5", "6", "7"],
     category: "Lifeguards & Supervision",
     regRef: "O. Reg. 565, s. 17"
   },
@@ -584,13 +594,13 @@ const QUESTIONS = [
   },
   {
     question: "What is the minimum number of lifeguard stations at a wave pool?",
-    options: ["1", "2", "3", "4"],
-    answer: 1,
+    correct: "2",
+    distractors: ["1", "3", "4", "5", "6"],
     category: "Lifeguards & Supervision",
     slideRef: "Part 4, Slide 6"
   },
 
-  // ---------- BATHER LOAD (NUMBERS) ----------
+  // ---------- BATHER LOAD (distractor pool format) ----------
   {
     question: "What is the bather load formula for a public pool?",
     options: [
@@ -613,67 +623,67 @@ const QUESTIONS = [
   },
   {
     question: "Class B pools below what size may operate without supervision?",
-    options: ["50 m²", "75 m²", "93 m²", "100 m²"],
-    answer: 2,
+    correct: "93 m²",
+    distractors: ["50 m²", "75 m²", "100 m²", "150 m²", "60 m²"],
     category: "Bather Load",
     regRef: "O. Reg. 565, s. 17(19)"
   },
   {
     question: "A buoy line is required at a Class B pool when the slope of depth change is greater than:",
-    options: ["5%", "8%", "10%", "15%"],
-    answer: 1,
+    correct: "8%",
+    distractors: ["5%", "10%", "15%", "12%", "6%"],
     category: "Bather Load",
     regRef: "O. Reg. 565, ss. 10, 17"
   },
 
-  // ---------- AGES & ADMISSION (NUMBERS) ----------
+  // ---------- AGES & ADMISSION (distractor pool format) ----------
   {
     question: "Children under what age must be accompanied by a parent/guardian (max 2:1 ratio)?",
-    options: ["Under 5", "Under 6", "Under 8", "Under 10"],
-    answer: 1,
+    correct: "Under 6",
+    distractors: ["Under 5", "Under 8", "Under 10", "Under 7", "Under 4"],
     category: "Ages & Admission",
     slideRef: "Part 2, Slide 20",
     regRef: "Office of the Chief Coroner"
   },
   {
     question: "Children between what ages may NOT be admitted unaccompanied unless they pass the facility swim test?",
-    options: ["4–7", "5–8", "6–9", "7–10"],
-    answer: 2,
+    correct: "6–9",
+    distractors: ["4–7", "5–8", "7–10", "5–9", "6–10"],
     category: "Ages & Admission",
     slideRef: "Part 2, Slide 20"
   },
   {
     question: "From what age may a child be admitted unaccompanied?",
-    options: ["8 and over", "9 and over", "10 and over", "12 and over"],
-    answer: 2,
+    correct: "10 and over",
+    distractors: ["8 and over", "9 and over", "12 and over", "11 and over", "7 and over"],
     category: "Ages & Admission",
     slideRef: "Part 2, Slide 20"
   },
   {
     question: "Per Coroner standards, the maximum ratio for non-swimmers under 10 (without lifejackets) is:",
-    options: ["2 : 1", "4 : 1", "6 : 1", "8 : 1"],
-    answer: 1,
+    correct: "4 : 1",
+    distractors: ["2 : 1", "6 : 1", "8 : 1", "3 : 1", "5 : 1"],
     category: "Ages & Admission",
     regRef: "Office of the Chief Coroner"
   },
   {
     question: "Per Coroner standards, the maximum ratio for non-swimmers under 10 WITH lifejackets is:",
-    options: ["2 : 1", "4 : 1", "6 : 1", "8 : 1"],
-    answer: 3,
+    correct: "8 : 1",
+    distractors: ["2 : 1", "4 : 1", "6 : 1", "10 : 1", "5 : 1"],
     category: "Ages & Admission",
     regRef: "Office of the Chief Coroner"
   },
   {
     question: "From what age must bathers use the changeroom designated for their gender?",
-    options: ["5 and over", "6 and over", "7 and over", "10 and over"],
-    answer: 2,
+    correct: "7 and over",
+    distractors: ["5 and over", "6 and over", "10 and over", "8 and over", "9 and over"],
     category: "Ages & Admission",
     slideRef: "Part 2, Slide 21"
   },
   {
     question: "At an unsupervised Class B pool, bathers under 12 must be accompanied by a parent/agent at least:",
-    options: ["14 years old", "15 years old", "16 years old", "18 years old"],
-    answer: 2,
+    correct: "16 years old",
+    distractors: ["14 years old", "15 years old", "18 years old", "12 years old", "17 years old"],
     category: "Ages & Admission",
     regRef: "O. Reg. 565, s. 17(19)"
   },
@@ -693,75 +703,75 @@ const QUESTIONS = [
   },
   {
     question: "A dry slide is exempt from being classified as a water slide if it is no taller than:",
-    options: ["1.5 m", "2 m", "3 m", "4 m"],
-    answer: 2,
+    correct: "3 m",
+    distractors: ["1.5 m", "2 m", "4 m", "2.5 m", "5 m"],
     category: "Specialty Facilities",
     regRef: "O. Reg. 565"
   },
   {
     question: "A wet slide is exempt from being classified as a water slide if it is shorter than ___ from entry to exit:",
-    options: ["1 m", "2 m", "3 m", "4 m"],
-    answer: 1,
+    correct: "2 m",
+    distractors: ["1 m", "3 m", "4 m", "1.5 m", "2.5 m"],
     category: "Specialty Facilities",
     regRef: "O. Reg. 565"
   },
   {
     question: "What is the maximum recommended spa use time?",
-    options: ["10 minutes", "15 minutes", "20 minutes", "30 minutes"],
-    answer: 1,
+    correct: "15 minutes",
+    distractors: ["10 minutes", "20 minutes", "30 minutes", "5 minutes", "25 minutes"],
     category: "Specialty Facilities",
     slideRef: "Part 4, Slide 63"
   },
   {
     question: "How far must an emergency telephone be from a spa?",
-    options: ["Within 10 m", "Within 20 m", "Within 30 m", "Within 50 m"],
-    answer: 2,
+    correct: "Within 30 m",
+    distractors: ["Within 10 m", "Within 20 m", "Within 50 m", "Within 15 m", "Within 25 m"],
     category: "Specialty Facilities",
     slideRef: "Part 4, Slide 65"
   },
 
-  // ---------- SIGNAGE (NUMBERS) ----------
+  // ---------- SIGNAGE (distractor pool format) ----------
   {
     question: "What is the minimum letter height for depth markings on the deck?",
-    options: ["50 mm", "75 mm", "100 mm", "150 mm"],
-    answer: 2,
+    correct: "100 mm",
+    distractors: ["50 mm", "75 mm", "150 mm", "125 mm", "200 mm"],
     category: "Signage",
     regRef: "O. Reg. 565, s. 19(6)"
   },
   {
     question: "What is the minimum letter height for a 'Shallow Water — No Diving' sign?",
-    options: ["100 mm", "125 mm", "150 mm", "200 mm"],
-    answer: 2,
+    correct: "150 mm",
+    distractors: ["100 mm", "125 mm", "200 mm", "75 mm", "175 mm"],
     category: "Signage",
     regRef: "O. Reg. 565, s. 19(7)"
   },
   {
     question: "What is the minimum letter height for a 'No Supervision' notice at a Class B pool?",
-    options: ["10 mm", "25 mm", "50 mm", "100 mm"],
-    answer: 1,
+    correct: "25 mm",
+    distractors: ["10 mm", "50 mm", "100 mm", "15 mm", "75 mm"],
     category: "Signage",
     regRef: "O. Reg. 565, s. 17(19)"
   },
   {
     question: "What is the diameter of the black disc used as a clarity test marker?",
-    options: ["100 mm", "125 mm", "150 mm", "200 mm"],
-    answer: 2,
+    correct: "150 mm",
+    distractors: ["100 mm", "125 mm", "200 mm", "175 mm", "75 mm"],
     category: "Signage",
     regRef: "O. Reg. 565, s. 19(6)"
   },
 
-  // ---------- ACCREDITATION ----------
+  // ---------- ACCREDITATION (mix of formats) ----------
   {
     question: "What is the year-round accreditation fee?",
-    options: ["$50 every year", "$100 every 2 years", "$150 every 3 years", "$200 annually"],
-    answer: 1,
+    correct: "$100 every 2 years",
+    distractors: ["$50 every year", "$150 every 3 years", "$200 annually", "$100 every year", "$50 every 2 years"],
     category: "Accreditation",
     slideRef: "Part 4, Slide 110"
   },
   {
     question: "What is the seasonal accreditation fee?",
-    options: ["$25 annually", "$50 annually", "$100 every 2 years", "$150 annually"],
-    answer: 1,
+    correct: "$50 annually",
+    distractors: ["$25 annually", "$100 every 2 years", "$150 annually", "$75 annually", "$100 annually"],
     category: "Accreditation",
     slideRef: "Part 4, Slide 110"
   },
@@ -791,15 +801,15 @@ const QUESTIONS = [
   },
   {
     question: "Roughly how long does an accreditation inspection take?",
-    options: ["15 minutes", "30 minutes", "1 hour", "Half a day"],
-    answer: 2,
+    correct: "1 hour",
+    distractors: ["15 minutes", "30 minutes", "Half a day", "2 hours", "45 minutes"],
     category: "Accreditation",
     slideRef: "Part 4, Slide 109"
   },
   {
     question: "How long is facility accreditation valid?",
-    options: ["1 year", "2 years", "3 years", "5 years"],
-    answer: 1,
+    correct: "2 years",
+    distractors: ["1 year", "3 years", "5 years", "18 months", "4 years"],
     category: "Accreditation",
     slideRef: "Part 4 (Aquatic Facility Accreditation)"
   },
@@ -841,38 +851,38 @@ const QUESTIONS = [
   },
   {
     question: "What is the rating scale for each factor in numeric risk evaluation?",
-    options: ["1 to 3", "1 to 5", "1 to 10", "0 to 100"],
-    answer: 1,
+    correct: "1 to 5",
+    distractors: ["1 to 3", "1 to 10", "0 to 100", "0 to 10", "1 to 7"],
     category: "Inspections",
     slideRef: "Part 1, Slide 37"
   },
   {
     question: "What is the overall score range in numeric risk evaluation?",
-    options: ["0 – 10", "0 – 25", "0 – 50", "0 – 100"],
-    answer: 1,
+    correct: "0 – 25",
+    distractors: ["0 – 10", "0 – 50", "0 – 100", "1 – 25", "0 – 30"],
     category: "Inspections",
     slideRef: "Part 1, Slide 37"
   },
 
-  // ---------- RECORDS & NOTIFICATIONS ----------
+  // ---------- RECORDS & NOTIFICATIONS (distractor pool format) ----------
   {
     question: "How long must daily records be retained?",
-    options: ["6 months", "1 year", "2 years", "5 years"],
-    answer: 1,
+    correct: "1 year",
+    distractors: ["6 months", "2 years", "5 years", "3 years", "18 months"],
     category: "Records & Notifications",
     regRef: "O. Reg. 565, s. 8"
   },
   {
     question: "How many days in advance must a pool opening be notified to Public Health?",
-    options: ["7 days", "14 days", "30 days", "60 days"],
-    answer: 1,
+    correct: "14 days",
+    distractors: ["7 days", "30 days", "60 days", "10 days", "21 days"],
     category: "Records & Notifications",
     regRef: "O. Reg. 565, ss. 5, 26.1"
   },
   {
     question: "Re-notification of Public Health is required when a pool has been closed for more than:",
-    options: ["1 week", "2 weeks", "4 weeks", "8 weeks"],
-    answer: 2,
+    correct: "4 weeks",
+    distractors: ["1 week", "2 weeks", "8 weeks", "6 weeks", "3 weeks"],
     category: "Records & Notifications",
     regRef: "O. Reg. 565, ss. 5, 26.1"
   },
@@ -904,8 +914,8 @@ const QUESTIONS = [
   },
   {
     question: "Fines for non-compliance with Regulation 565 range from:",
-    options: ["$25 to $100", "$55 to $465", "$100 to $1000", "$500 to $5000"],
-    answer: 1,
+    correct: "$55 to $465",
+    distractors: ["$25 to $100", "$100 to $1000", "$500 to $5000", "$50 to $500", "$75 to $750"],
     category: "Closure Triggers",
     regRef: "Health Protection and Promotion Act; Reg 950 Schedule 39"
   }
