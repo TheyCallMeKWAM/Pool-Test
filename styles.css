@@ -19,6 +19,17 @@
   --gray-700: #404040;
   --correct: #16a34a;
   --incorrect: #dc2626;
+
+  /* Reference tag colours
+     Slides: neutral grey to match the minimalist theme
+     Regulation: amber/orange to mirror the orange-highlighted boxes
+                 used throughout the LSS comprehensive study guide */
+  --ref-slide-bg: #1f2937;
+  --ref-slide-text: #ffffff;
+  --ref-reg-bg: #fef3c7;
+  --ref-reg-border: #d97706;
+  --ref-reg-text: #78350f;
+
   --border: 1px solid var(--black);
   --transition: 150ms ease;
 }
@@ -281,6 +292,76 @@ h2 {
   font-size: 0.95rem;
 }
 
+/* =============================================================
+   REFERENCE TAGS
+   Slide refs use a dark grey/black tag (matches minimalist theme)
+   Regulation refs use an amber/orange tag (matches the orange
+   highlight convention in your LSS comprehensive study guide)
+   ============================================================= */
+.references {
+  margin-top: 0.875rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--gray-300);
+}
+
+.references-title {
+  font-size: 0.75rem;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  margin-bottom: 0.5rem;
+}
+
+.references-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ref-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  border-radius: 2px;
+}
+
+.ref-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.ref-value {
+  font-weight: 500;
+}
+
+/* Slide reference: dark grey */
+.ref-tag.ref-slide {
+  background: var(--ref-slide-bg);
+  color: var(--ref-slide-text);
+}
+.ref-tag.ref-slide .ref-label {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--ref-slide-text);
+}
+
+/* Regulation reference: amber/orange (matches the study guide) */
+.ref-tag.ref-regulation {
+  background: var(--ref-reg-bg);
+  color: var(--ref-reg-text);
+  border-left: 3px solid var(--ref-reg-border);
+}
+.ref-tag.ref-regulation .ref-label {
+  background: var(--ref-reg-border);
+  color: var(--white);
+}
+
 /* ----- Results screen ----- */
 .results-summary {
   text-align: center;
@@ -383,4 +464,7 @@ h2 {
   .button-row { flex-direction: column; }
   .button-row .primary-btn,
   .button-row .secondary-btn { width: 100%; }
+  .ref-tag {
+    flex-wrap: wrap;
+  }
 }

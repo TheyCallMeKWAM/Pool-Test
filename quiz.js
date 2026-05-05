@@ -36,6 +36,7 @@ const els = {
   feedback:         document.getElementById('feedback'),
   feedbackText:     document.getElementById('feedback-text'),
   explanationText:  document.getElementById('explanation-text'),
+  referencesBox:    document.getElementById('references-box'),
   nextBtn:          document.getElementById('next-btn'),
   finalPercentage:  document.getElementById('final-percentage'),
   correctCount:     document.getElementById('correct-count'),
@@ -61,7 +62,6 @@ function showScreen(name) {
 // =============================================================
 els.lengthOptions.addEventListener('click', (e) => {
   if (!e.target.classList.contains('length-btn')) return;
-  // Remove "selected" from all, add to clicked
   els.lengthOptions.querySelectorAll('.length-btn').forEach(b => b.classList.remove('selected'));
   e.target.classList.add('selected');
   state.selectedLength = parseInt(e.target.dataset.length, 10);
@@ -73,13 +73,11 @@ els.startBtn.addEventListener('click', startQuiz);
 // START QUIZ
 // =============================================================
 function startQuiz() {
-  // Reset state
   state.score = 0;
   state.currentIndex = 0;
   state.missed = [];
   state.answered = false;
 
-  // Pick random questions (capped at total available)
   const count = Math.min(state.selectedLength, QUESTIONS.length);
   state.questions = shuffleArray([...QUESTIONS]).slice(0, count);
 
@@ -96,6 +94,42 @@ function shuffleArray(arr) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;
+}
+
+// =============================================================
+// HELPER: Build the references HTML for a question
+// Returns the HTML string for slide and/or regulation tags.
+// Returns empty string if neither reference is present.
+// =============================================================
+function buildReferencesHtml(q) {
+  const tags = [];
+
+  if (q.slideRef) {
+    tags.push(`
+      <div class="ref-tag ref-slide">
+        <span class="ref-label">SLIDES</span>
+        <span class="ref-value">${escapeHtml(q.slideRef)}</span>
+      </div>
+    `);
+  }
+
+  if (q.regRef) {
+    tags.push(`
+      <div class="ref-tag ref-regulation">
+        <span class="ref-label">REGULATION</span>
+        <span class="ref-value">${escapeHtml(q.regRef)}</span>
+      </div>
+    `);
+  }
+
+  if (tags.length === 0) return '';
+
+  return `
+    <div class="references">
+      <p class="references-title">Reference${tags.length > 1 ? 's' : ''}:</p>
+      <div class="references-tags">${tags.join('')}</div>
+    </div>
+  `;
 }
 
 // =============================================================
@@ -121,21 +155,22 @@ function renderQuestion() {
   q.options.forEach((optionText, index) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.innerHTML = `<span class="option-letter">${letters[index]}</span><span>${optionText}</span>`;
+    btn.innerHTML = `<span class="option-letter">${letters[index]}</span><span>${escapeHtml(optionText)}</span>`;
     btn.addEventListener('click', () => handleAnswer(index));
     els.optionsContainer.appendChild(btn);
   });
 
-  // Hide feedback + next button
+  // Hide feedback + next button + clear references
   els.feedback.classList.add('hidden');
   els.nextBtn.classList.add('hidden');
+  els.referencesBox.innerHTML = '';
 }
 
 // =============================================================
 // HANDLE AN ANSWER
 // =============================================================
 function handleAnswer(selectedIndex) {
-  if (state.answered) return;     // prevent multiple clicks
+  if (state.answered) return;
   state.answered = true;
 
   const q = state.questions[state.currentIndex];
@@ -164,7 +199,9 @@ function handleAnswer(selectedIndex) {
       question: q.question,
       yourAnswer: q.options[selectedIndex],
       correctAnswer: q.options[correctIndex],
-      explanation: q.explanation
+      explanation: q.explanation,
+      slideRef: q.slideRef,
+      regRef: q.regRef
     });
   }
 
@@ -175,6 +212,9 @@ function handleAnswer(selectedIndex) {
   } else {
     els.explanationText.classList.add('hidden');
   }
+
+  // Show source references (slide / regulation tags)
+  els.referencesBox.innerHTML = buildReferencesHtml(q);
 
   els.feedback.classList.remove('hidden');
   els.scoreDisplay.textContent = `Score: ${state.score}`;
@@ -209,7 +249,6 @@ function showResults() {
   els.correctCount.textContent = state.score;
   els.totalCount.textContent = total;
 
-  // Pool inspector exam pass mark is 75%
   if (percent >= 75) {
     els.passFailMessage.textContent = 'PASS — you would meet the 75% threshold';
     els.passFailMessage.className = 'pass-fail pass';
@@ -218,7 +257,7 @@ function showResults() {
     els.passFailMessage.className = 'pass-fail fail';
   }
 
-  // Render missed questions
+  // Render missed questions WITH references
   if (state.missed.length > 0) {
     els.missedSection.classList.remove('hidden');
     els.missedList.innerHTML = state.missed.map(m => `
@@ -227,6 +266,7 @@ function showResults() {
         <p class="missed-answer your-answer"><span class="label">Your answer:</span> ${escapeHtml(m.yourAnswer)}</p>
         <p class="missed-answer correct-answer"><span class="label">Correct:</span> ${escapeHtml(m.correctAnswer)}</p>
         ${m.explanation ? `<p class="missed-explanation">${escapeHtml(m.explanation)}</p>` : ''}
+        ${buildReferencesHtml(m)}
       </div>
     `).join('');
   } else {

@@ -36,7 +36,7 @@ python3 -m http.server 8000
 
 ## Adding new questions
 
-Open `questions.js` and copy an existing question block. Each question has 5 fields:
+Open `questions.js` and copy an existing question block. Each question has up to 7 fields:
 
 ```js
 {
@@ -44,11 +44,26 @@ Open `questions.js` and copy an existing question block. Each question has 5 fie
   options:  ["Option A", "Option B", "Option C", "Option D"],
   answer:   2,                           // 0=A, 1=B, 2=C, 3=D
   category: "Water Chemistry",
-  explanation: "Optional short note shown after answering"
+  explanation: "Optional short note shown after answering",
+  slideRef: "Part 3, Slide 24",          // optional: source from LSS slides
+  regRef:   "O. Reg. 565, s. 7"          // optional: source from regulation/guide
 }
 ```
 
 The `answer` field is the **index** of the correct option (zero-based).
+
+### About references
+
+Each question can have one or both reference fields:
+
+- **`slideRef`** — Cite content from the LSS slides (e.g., `"Part 4, Slide 64"`).
+  Renders as a dark grey tag in the feedback box.
+- **`regRef`** — Cite content from Ontario Regulation 565 or the LSS Guide to
+  Public Pool Regulations (e.g., `"O. Reg. 565, s. 7"`).
+  Renders as an amber/orange tag, mirroring the orange highlight convention
+  used in the comprehensive study guide.
+
+Either field is optional. Questions can have one, both, or neither.
 
 Save the file and refresh the page — your new question is now in the pool.
 
