@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aquatic Safety Inspector — Practice Quiz</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+
+    <!-- =============================
+         SCREEN 1: SETUP / WELCOME
+         ============================= -->
+    <section id="setup-screen" class="screen">
+      <h1>Aquatic Safety Inspector</h1>
+      <p class="subtitle">Practice Quiz</p>
+
+      <p class="intro">
+        Test your knowledge against questions drawn from the Lifesaving Society
+        Aquatic Safety Inspector study guide and Ontario Regulation 565.
+      </p>
+
+      <div class="setup-block">
+        <label class="setup-label">How many questions?</label>
+        <div class="button-row" id="length-options">
+          <button class="length-btn" data-length="10">10</button>
+          <button class="length-btn selected" data-length="20">20</button>
+          <button class="length-btn" data-length="50">50</button>
+        </div>
+      </div>
+
+      <button id="start-btn" class="primary-btn">Start Quiz</button>
+    </section>
+
+    <!-- =============================
+         SCREEN 2: QUIZ IN PROGRESS
+         ============================= -->
+    <section id="quiz-screen" class="screen hidden">
+      <header class="quiz-header">
+        <div class="progress-info">
+          <span id="question-counter">Question 1 of 20</span>
+          <span id="score-display">Score: 0</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+      </header>
+
+      <div class="category-tag" id="category-tag">Category</div>
+
+      <h2 id="question-text" class="question-text">Question goes here</h2>
+
+      <div id="options-container" class="options-container">
+        <!-- Buttons will be injected here by JS -->
+      </div>
+
+      <div id="feedback" class="feedback hidden">
+        <p id="feedback-text"></p>
+        <p id="explanation-text" class="explanation"></p>
+      </div>
+
+      <button id="next-btn" class="primary-btn hidden">Next Question</button>
+    </section>
+
+    <!-- =============================
+         SCREEN 3: RESULTS
+         ============================= -->
+    <section id="results-screen" class="screen hidden">
+      <h1>Quiz Complete</h1>
+
+      <div class="results-summary">
+        <div class="score-circle">
+          <span id="final-percentage">0%</span>
+        </div>
+        <p class="results-detail">
+          You answered <strong id="correct-count">0</strong> out of
+          <strong id="total-count">0</strong> correctly
+        </p>
+        <p id="pass-fail-message" class="pass-fail"></p>
+      </div>
+
+      <div id="missed-questions-section" class="missed-section hidden">
+        <h2>Review: Missed Questions</h2>
+        <div id="missed-list"></div>
+      </div>
+
+      <div class="button-row">
+        <button id="restart-btn" class="primary-btn">Try Again</button>
+        <button id="home-btn" class="secondary-btn">Back to Start</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Load question bank first, then quiz logic -->
+  <script src="questions.js"></script>
+  <script src="quiz.js"></script>
+</body>
+</html>
