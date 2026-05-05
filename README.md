@@ -3,6 +3,11 @@
 A static website that lets candidates practice multiple-choice questions for the
 Lifesaving Society Aquatic Safety Inspector certification exam.
 
+The bank contains **100 questions**, all drawn from the Ontario pool guides
+(Lifesaving Society slides + Ontario Regulation 565 / Sept 2025 LSS Guide).
+Questions cover **definitions, numeric standards, and accreditation rules** —
+no meta-questions about the exam itself.
+
 ## Files
 
 | File           | Purpose                                                |
@@ -36,7 +41,7 @@ python3 -m http.server 8000
 
 ## Adding new questions
 
-Open `questions.js` and copy an existing question block. Each question has up to 7 fields:
+Open `questions.js` and copy an existing question block:
 
 ```js
 {
@@ -54,32 +59,36 @@ The `answer` field is the **index** of the correct option (zero-based).
 
 ### About references
 
-Each question can have one or both reference fields:
-
-- **`slideRef`** — Cite content from the LSS slides (e.g., `"Part 4, Slide 64"`).
-  Renders as a dark grey tag in the feedback box.
-- **`regRef`** — Cite content from Ontario Regulation 565 or the LSS Guide to
-  Public Pool Regulations (e.g., `"O. Reg. 565, s. 7"`).
-  Renders as an amber/orange tag, mirroring the orange highlight convention
-  used in the comprehensive study guide.
+- **`slideRef`** — Cite content from the LSS slides. Renders as a dark grey tag.
+- **`regRef`** — Cite content from Ontario Regulation 565 or the Sept 2025 LSS
+  Guide. Renders as an amber/orange tag (mirroring the orange highlight
+  convention used in the comprehensive study guide).
 
 Either field is optional. Questions can have one, both, or neither.
 
-Save the file and refresh the page — your new question is now in the pool.
+## Question categories in the bank
 
-## Question categories currently in the bank
+| Category                  | Count |
+|---------------------------|-------|
+| Water Chemistry           |   15  |
+| Lifeguards & Supervision  |   10  |
+| Pool Classifications      |    9  |
+| Accreditation             |    9  |
+| Safety Equipment          |    8  |
+| Inspections               |    7  |
+| Distances & Depths        |    7  |
+| Ages & Admission          |    7  |
+| Definitions               |    6  |
+| Specialty Facilities      |    5  |
+| Bather Load               |    4  |
+| Signage                   |    4  |
+| Records & Notifications   |    4  |
+| Temperatures              |    3  |
+| Closure Triggers          |    2  |
+| **Total**                 |  **100**  |
 
-- Exam Logistics
-- Water Chemistry
-- Temperatures
-- Distances & Depths
-- Pool Classes
-- Safety Equipment
-- Lifeguards & Supervision
-- Bather Load
-- Ages & Admission
-- Specialty Facilities (wave pools, slides, spas)
-- Signage
-- Inspections
-- Records & Notifications
-- Closure Triggers
+## Quiz length options
+
+On the setup screen, candidates can choose 10, 25, 50, or 100 questions per session.
+Questions are randomly selected from the full bank each time, with no repeats
+within a single quiz.

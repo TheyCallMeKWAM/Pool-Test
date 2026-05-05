@@ -9,7 +9,7 @@
 
 // ----- State (the "memory" of the app) -----
 const state = {
-  selectedLength: 20,    // how many questions the user wants
+  selectedLength: 25,    // how many questions the user wants
   questions: [],         // the random subset selected for this run
   currentIndex: 0,       // which question we're on
   score: 0,              // running correct count
